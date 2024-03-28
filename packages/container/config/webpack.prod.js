@@ -11,6 +11,8 @@ const prodConfig = {
   output: {
     // name convention to address caching issues [contenthash] - hash of content
     filename: "[name].[contenthash].js",
+    //search *.js files in this path instead of root path
+    publicPath: "/container/latest/",
   },
   plugins: [
     new ModuleFederation({
