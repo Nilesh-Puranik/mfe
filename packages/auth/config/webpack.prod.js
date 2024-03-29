@@ -3,24 +3,19 @@ const ModuleFederation = require("webpack/lib/container/ModuleFederationPlugin")
 const commonConfig = require("./webpack.common");
 const packageJSON = require("../package.json");
 
-const domain = process.env.PRODUCTION_DOMAIN;
-
-//here webpack does some optimizations minifying
 const prodConfig = {
   mode: "production",
   output: {
-    // name convention to address caching issues [contenthash] - hash of content
     filename: "[name].[contenthash].js",
-    //search *.js files in this path instead of root path
-    publicPath: "/container/latest/",
+    //so different *.js files remoteEntry.js to find in the pathis path
+    publicPath: "/auth/latest/",
   },
   plugins: [
     new ModuleFederation({
-      // host module
-      name: "container",
-      remotes: {
-        marketingApp: `marketing@${domain}/marketing/latest/remoteEntry.js`,
-        authApp: `auth@${domain}/auth/latest/remoteEntry.js`,
+      name: "auth",
+      filename: "remoteEntry.js",
+      exposes: {
+        "./Auth": "./src/bootstrap",
       },
       shared: packageJSON.dependencies,
     }),
